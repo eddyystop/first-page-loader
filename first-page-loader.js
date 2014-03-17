@@ -77,28 +77,3 @@ PJAX = {
     }
   }
 };
-
-PJAX.onReady(function () {
-  PJAX.loadCssUrls([
-    '/concat/production.css',
-    //'//cdn.jsdelivr.net/foundation/5.0.2/css/foundation.css', 'production.css',
-    '/css/pjax-responsive-tables.css'
-  ]);
-
-  PJAX.loadJsUrls([
-    '//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.js',
-    //['/js/vendor/jQuery.js'],
-    '/js/vendor/jquery.pjax.js',
-    '/js/vendor/modernizr_input.js',
-    '/js/vendor/foundation.js',
-    '/js/vendor/foundation.abide.js',
-    '/js/vendor/jquery-pjax-toolkit.js',
-    '/js/pjax-controllers.js'
-  ], function () {
-    $(document).foundation();
-    $.pjax({
-      url: PJAX.feature.addClientInfo('<%= view.htmlToLoad %>'),
-      container: '#pjax-container-main'
-    });
-  });
-});
