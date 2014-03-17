@@ -1,0 +1,25 @@
+{
+  "name": "first-page-loader",
+  "version": "0.1.0",
+  "homepage": "https://github.com/eddyystop/first-page-loader",
+  "authors": [
+    "eddyystop <johnsz@gmail.com>"
+  ],
+  "description": "Basic support for downloading JS and CSS files. Works well with jquery-pjax.",
+  "main": "first-page-loader.js",
+  "keywords": [
+    "loader",
+    "pjax",
+    "atf",
+    "above",
+    "fold"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
