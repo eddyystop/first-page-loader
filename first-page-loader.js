@@ -1,12 +1,16 @@
-QQ = {
-  // Use 1 'var' per function to reduce warnings from Yahoo compressor
+PJAX = {
+  _loaded: [], // List of loaded URLs is used by companion repos.
+
+  // Wait till DOM is fully rendered
   onReady: function onReady (cb) {
-    if (window.addEventListener)
+    if (window.addEventListener) {
       window.addEventListener('load', cb, false);
-    else if (window.attachEvent) window.attachEvent('onload', cb);
-    else window.onload = cb;
+    } else if (window.attachEvent) {
+      window.attachEvent('onload', cb);
+    } else { window.onload = cb; }
   },
 
+  // Load Javascript and other <script> files in sequence
   loadJsUrls: function loadJsUrls (files, mimeType, cb) {
     if (typeof mimeType !== 'string') {
       cb = mimeType;
@@ -22,17 +26,33 @@ QQ = {
       el.onreadystatechange = el.onload = function () {
         var state = el.readyState;
         if (!state || /loaded|complete/.test(state)) {
-          QQ.loadJsUrls(files.slice(1), cb);
+          console.log('loaded', el.src);
+          PJAX._loaded.push(el.src);
+          PJAX.loadJsUrls(files.slice(1), cb);
         }
       };
 
       (document.body || document.head).appendChild(el);//body safer IE
     } else {
-      if (cb) cb();
+      console.log('===== all js loaded');
+      if (cb) { cb(); }
     }
   },
 
-  loadCssUrls: function loadCssUrls (files, cb) {
+  // Initiate loading of CSS files.
+  loadCssUrls: function loadCssUrls (files) {
+    var headEl = document.getElementsByTagName('head')[0];
+
+    for (var i = 0, len = files.length; i < len; i += 1) {
+      var style = document.createElement('style');
+      style.textContent = '@import "' + files[i] + '"';
+      headEl.appendChild(style);
+    }
+    console.log('===== all css loading initiated');
+  },
+
+  // Load CSS files in sequence. (You can remove to reduce size.)
+  loadCssUrlsSeq: function loadCssUrls (files, cb) {
     // http://meyerweb.com/eric/css/link-specificity.html
     // http://www.phpied.com/when-is-a-stylesheet-really-loaded/
 
@@ -44,11 +64,41 @@ QQ = {
       fi = setInterval(function() {
         if (style.sheet && style.sheet.cssRules) {
           clearInterval(fi);
-          QQ.loadCssUrls(files.slice(1), cb);
+          console.log('loaded', files[0]);
+          PJAX._loaded.push(files[0]);
+          PJAX.loadCssUrls(files.slice(1), cb);
         }
       }, 10);
 
       document.getElementsByTagName('head')[0].appendChild(style);
-    } else if (cb) cb();
+    } else {
+      console.log('===== all css loaded in sequence');
+      if (cb) { cb(); }
+    }
   }
 };
+
+PJAX.onReady(function () {
+  PJAX.loadCssUrls([
+    '/concat/production.css',
+    //'//cdn.jsdelivr.net/foundation/5.0.2/css/foundation.css', 'production.css',
+    '/css/pjax-responsive-tables.css'
+  ]);
+
+  PJAX.loadJsUrls([
+    '//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.js',
+    //['/js/vendor/jQuery.js'],
+    '/js/vendor/jquery.pjax.js',
+    '/js/vendor/modernizr_input.js',
+    '/js/vendor/foundation.js',
+    '/js/vendor/foundation.abide.js',
+    '/js/vendor/jquery-pjax-toolkit.js',
+    '/js/pjax-controllers.js'
+  ], function () {
+    $(document).foundation();
+    $.pjax({
+      url: PJAX.feature.addClientInfo('<%= view.htmlToLoad %>'),
+      container: '#pjax-container-main'
+    });
+  });
+});
