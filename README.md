@@ -1,5 +1,8 @@
 # first-page-loader
 
+Basic lib for downloading additional JS and CSS.
+Used to show the first (skeletal) browser page in under 1 sec.
+
 ### First page loading in under 1 second.
 
 Advances in Internet technology like widespread broadband access have made the
@@ -129,30 +132,6 @@ using a pattern such as:
      }
  });
  ```
-
-##### 7. Record of loaded files.
-
- The array `QQ._loaded` contains successfully loaded URLs.
- You can use it to prevent reloading files, or you can use the companion repo
- [pjax-loader] (https://github.com/eddyystop/pjax-loader).
-
- On Windows, the URLs contain `/` or `\` chars exactly as passed in.
- You need to standardize on `/` if you want to use
- [pjax-loader] (https://github.com/eddyystop/pjax-loader).
-
-### Works well with jquery-pjax
-IMHO opinion MV* and SPA designs are overkill for the majority of web sites,
-as well as the minimum viable product implementations for many startup ideas.
-
-[jquery-pjax] (https://github.com/defunkt/jquery-pjax),
-used in portions of github.com,  supports a very simple,
-viable design with a great performance profile if:
- - Displayed data does not have to change in real time.
- - You do not display **lots** of data and only small amounts of it change at any time.
-
-first-page-loader may be used in conjunction with
-[pjax-loader] (https://github.com/eddyystop/pjax-loader)
-to provide enhanced dependency control for jquery-pjax.
 
 ### License
 Copyright (c) 2014 John Szwaronek (<johnsz9999@gmail.com>).
