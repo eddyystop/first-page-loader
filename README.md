@@ -29,6 +29,8 @@ template files after the initial 14k payload is delivered.
 
 ### How to install
 ```sh
+bower install first-page-loader
+    or
 bower install git://github.com/eddyystop/first-page-loader
 ```
 
