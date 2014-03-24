@@ -38,7 +38,7 @@ bower install git://github.com/eddyystop/first-page-loader
 
 ##### 1. Specify a function to execute when the DOM is fully loaded.
 ```js
-QQ.onReady( handler );
+PJAX.onReady( handler );
 ```
 This is similar to what `$( document ).ready( handler )`
 would do if jQuery was loaded.
@@ -48,7 +48,7 @@ received. Therefore it does not delay the initial render of the page.
 
 ##### 2. Load JavaScript files sequentially.
 ```js
-QQ.loadJsUrls([
+PJAX.loadJsUrls([
     '//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.js',
     '/js/vendor/modernizr.js',
     '/js/vendor/foundation.js',
@@ -63,7 +63,7 @@ The optional `handler` is called once all the files have loaded successfully.
 
 ##### 3. Load other script files, such as templates, sequentially.
 ```js
-QQ.loadJsUrls([
+PJAX.loadJsUrls([
     '/template/signin.ejs',
     '/template/profile.ejs'
 ], 'text/template', handler);
@@ -73,7 +73,7 @@ Use any mime type you want.
 
 ##### 4. Initiate loading of CSS files in parallel.
 ```js
-QQ.loadCssUrls([
+PJAX.loadCssUrls([
     '//cdn.jsdelivr.net/foundation/5.0.2/css/foundation.css',
     '/css/vendor/zurb-responsive-tables.css'
 ]);
@@ -81,7 +81,7 @@ QQ.loadCssUrls([
 
 ##### 5. Load CSS files sequentially.
 ```js
-QQ.loadCssUrls([
+PJAX.loadCssUrls([
     '//cdn.jsdelivr.net/foundation/5.0.2/css/foundation.css',
     '/css/vendor/zurb-responsive-tables.css'
 ], handler);
@@ -98,22 +98,22 @@ It turns out a cross-browser solution for this [is harder than it should be.]
 You can load JavaScript, CSS and template files in parallel if you need to,
 using a pattern such as:
 ```js
- QQ.onReady(function () {
+ PJAX.onReady(function () {
      // Load 3 streams of files in parallel
      var asyncRemaining = 3;
 
-     QQ.loadCssUrls([
+     PJAX.loadCssUrls([
          '/concat/production.css'
      ], function () { if (!--asyncRemaining) {doOnceAllLoaded();} }
      );
 
-     QQ.loadJsUrls([
+     PJAX.loadJsUrls([
          '/template/signin.ejs'
      ], 'text/template',
      function () { if (!--asyncRemaining) {doOnceAllLoaded();} }
      );
 
-     QQ.loadJsUrls([
+     PJAX.loadJsUrls([
          '//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.js',
 
          // Load individual files during development.
