@@ -40,7 +40,7 @@ bower install git://github.com/eddyystop/first-page-loader
 
 [The script-injected pattern offers no benefits over < script async >.]
 (https://www.igvita.com/2014/05/20/script-injected-async-scripts-considered-harmful/)
-Script-injection has been preferred because <script async> was not available 
+Script-injection has been preferred because script async was not available 
 and preload scanners did not exist when it was first introduced.
 That era has passed and even IE8/9 and Android 2.3/2.2 now have a 
 preload scanner.
