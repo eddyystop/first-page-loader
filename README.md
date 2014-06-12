@@ -36,7 +36,38 @@ bower install git://github.com/eddyystop/first-page-loader
 
 ### How to use
 
-##### 1. Specify a function to execute when the DOM is fully loaded.
+##### 1. Wait till async dependencies have been loaded
+
+[The script-injected pattern offers no benefits over < script async >.]
+(https://www.igvita.com/2014/05/20/script-injected-async-scripts-considered-harmful/)
+Script-injection has been preferred because <script async> was not available 
+and preload scanners did not exist when it was first introduced.
+That era has passed and even IE8/9 and Android 2.3/2.2 now have a 
+preload scanner.
+
+However the async attribute makes no guarantee about execution order,
+so the script-injection pattern can be used to manage dependencies.
+
+For example, you can download jQuery using script async without 
+delaying rendering of the first page. 
+You can download any jQuery dependencies once the page is rendered.
+The result is that your page will be fully ready sooner.
+
+```js
+<script src="jquery.js"></script>
+<script src="mithril.js"></script>
+    
+PJAX.waitTill(conditions, handler);
+
+function conditions () {
+  return typeof $ !== 'undefined' && typeof m !== 'undefined';
+}
+```
+
+`handler` is called when the jQuery and Mithril globals become defined,
+indicating their scripts have been loaded.
+ 
+##### 2. Specify a function to execute when the DOM is fully loaded.
 ```js
 PJAX.onReady( handler );
 ```
@@ -46,7 +77,7 @@ would do if jQuery was loaded.
 `handler` is called when all assets such as images have been completely
 received. Therefore it does not delay the initial render of the page.
 
-##### 2. Load JavaScript files sequentially.
+##### 3. Load JavaScript files sequentially.
 ```js
 PJAX.loadJsUrls([
     '//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.js',
@@ -61,7 +92,7 @@ so dependencies are respected.
 
 The optional `handler` is called once all the files have loaded successfully.
 
-##### 3. Load other script files, such as templates, sequentially.
+##### 4. Load other script files, such as templates, sequentially.
 ```js
 PJAX.loadJsUrls([
     '/template/signin.ejs',
@@ -71,7 +102,7 @@ PJAX.loadJsUrls([
 
 Use any mime type you want.
 
-##### 4. Initiate loading of CSS files in parallel.
+##### 5. Initiate loading of CSS files in parallel.
 ```js
 PJAX.loadCssUrls([
     '//cdn.jsdelivr.net/foundation/5.0.2/css/foundation.css',
@@ -79,7 +110,7 @@ PJAX.loadCssUrls([
 ]);
 ```
 
-##### 5. Load CSS files sequentially.
+##### 6. Load CSS files sequentially.
 ```js
 PJAX.loadCssUrls([
     '//cdn.jsdelivr.net/foundation/5.0.2/css/foundation.css',
@@ -94,7 +125,7 @@ importance, i.e. `!important`, and
 It turns out a cross-browser solution for this [is harder than it should be.]
 (http://www.phpied.com/when-is-a-stylesheet-really-loaded/)
 
-##### 6. Load files in parallel.
+##### 7. Load files in parallel.
 You can load JavaScript, CSS and template files in parallel if you need to,
 using a pattern such as:
 ```js

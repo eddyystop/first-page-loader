@@ -39,7 +39,7 @@ PJAX = {
     }
   },
 
-  // Initiate loading of CSS files.
+  // Async load CSS files.
   loadCssUrls: function loadCssUrls (files) {
     var headEl = document.getElementsByTagName('head')[0];
 
@@ -75,5 +75,17 @@ PJAX = {
       console.log('===== all css loaded in sequence');
       if (cb) { cb(); }
     }
+  },
+
+  // Wait till condition is met
+  waitTill: function (evalCondition, cb, delay) {
+    if (!evalCondition()) {
+      setTimeout(function () {
+        PJAX.waitTill(evalCondition, cb, delay);
+      }, delay || 100);
+      return;
+    }
+
+    cb();
   }
 };
