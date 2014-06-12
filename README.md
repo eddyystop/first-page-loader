@@ -46,7 +46,7 @@ so the script-injection pattern can be used to manage dependencies.
 
 For example, you can download jQuery using script async without 
 delaying rendering of the first page. 
-You can download any jQuery dependencies once the page is rendered.
+You can then download any modules dependant on jQuery once the page is rendered.
 The result is that your page will be fully ready sooner.
 
 ```js
