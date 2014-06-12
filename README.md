@@ -38,14 +38,10 @@ bower install git://github.com/eddyystop/first-page-loader
 
 ##### 1. Wait till async dependencies have been loaded
 
-[The script-injected pattern offers no benefits over < script async >.]
+[The script-injected pattern now offers no benefits over < script async >]
 (https://www.igvita.com/2014/05/20/script-injected-async-scripts-considered-harmful/)
-Script-injection has been preferred because script async was not available 
-and preload scanners did not exist when it was first introduced.
-That era has passed and even IE8/9 and Android 2.3/2.2 now have a 
-preload scanner.
-
-However the async attribute makes no guarantee about execution order,
+even for IE8/9 and Android 2.3/2.2. 
+However script async makes no guarantee about execution order,
 so the script-injection pattern can be used to manage dependencies.
 
 For example, you can download jQuery using script async without 
@@ -55,17 +51,16 @@ The result is that your page will be fully ready sooner.
 
 ```js
 <script src="jquery.js"></script>
-<script src="mithril.js"></script>
     
 PJAX.waitTill(conditions, handler);
 
 function conditions () {
-  return typeof $ !== 'undefined' && typeof m !== 'undefined';
+  return typeof $ !== 'undefined'; // check for any number or type of conditions
 }
 ```
 
-`handler` is called when the jQuery and Mithril globals become defined,
-indicating their scripts have been loaded.
+`handler` is called when jQuery has been downloaded, parsed 
+and its global `$` is defined.
  
 ##### 2. Specify a function to execute when the DOM is fully loaded.
 ```js
